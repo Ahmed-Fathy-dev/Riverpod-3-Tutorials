@@ -82,16 +82,29 @@
 ### [**Unification of the Public APIs**](https://github.com/Ahmed-Fathy-dev/Riverpod-3-Tutorials/blob/main/Riverpod%203%20Upgrades/008-Unification%20of%20the%20Public%20APIs.md)
 
 - StateProvider/StateNotifierProvider and ChangeNotifierProvider are discouraged and moved to a different import.
+
 دلوقتي بقوا غير مستحب استخدامهم (discouraged)، وتم نقلهم من المكتبة الرئيسية `flutter_riverpod` إلى مكتبة فرعية اسمها `flutter_riverpod/legacy`
+
 - AutoDispose interfaces are removed.
+
 ـinterfaces الخاصة بالـ`AutoDispose` (زي `AutoDisposeProvider`, `AutoDisposeStateNotifierProvider`  إلخ) تم إزالتها من الـAPI العام لكن الميزة نفسها موجودة لسة
+
 دلوقتي، الـ`AutoDispose` بقى جزء مدمج في الـproviders العادية. يعني، بدل ما تستخدم `AutoDisposeProvider`، بتستخدم `Provider` مع modifier
+
 - "FamilyNotifier" and "Notifier" are fused.
-الـ`FamilyNotifier` والـ`Notifier` اتدمجوا مع بعض في Riverpod 3.0. في الإصدارات القديمة، لو كنت عايز تستخدم provider بياخد parameter (زي `FamilyProvider` أو `FamilyNotifierProvider`)، كنت بتحتاج تعرف `FamilyNotifier` منفصل. دلوقتي، الـ`Notifier` نفسه بقى بيدعم الـparameters، فمفيش داعي للـ`FamilyNotifier` ككيان منفصل.
+
+الـ`FamilyNotifier` والـ`Notifier` اتدمجوا مع بعض في Riverpod 3.0. في الإصدارات القديمة، لو كنت عايز تستخدم provider بياخد parameter (زي `FamilyProvider` أو `FamilyNotifierProvider`)، 
+كنت بتحتاج تعرف `FamilyNotifier` منفصل. دلوقتي، الـ`Notifier` نفسه بقى بيدعم الـparameters، فمفيش داعي للـ`FamilyNotifier` ككيان منفصل.
+
 - One Ref to rule them all.
- يعني، "Ref واحد يتحكم في الكل". الفكرة هنا إن Riverpod 3.0 بيوحد طريقة استخدام الـ`Ref` عبر كل أنواع الـproviders. في الإصدارات القديمة، كان فيه أنواع مختلفة من `Ref` (زي `ProviderRef`, `StateNotifierProviderRef`, إلخ) حسب نوع الـprovider. دلوقتي، كل الـproviders بتستخدم نفس الـ`Ref` interface، وده بيبسط الكود جدًا.
+
+ يعني، "Ref واحد يتحكم في الكل". الفكرة هنا إن Riverpod 3.0 بيوحد طريقة استخدام الـ`Ref` عبر كل أنواع الـproviders. في الإصدارات القديمة، كان فيه أنواع مختلفة من `Ref` (زي `ProviderRef`, `StateNotifierProviderRef`, إلخ) حسب نوع الـprovider.
+ دلوقتي، كل الـproviders بتستخدم نفس الـ`Ref` interface، وده بيبسط الكود جدًا.
+
 - All updateShouldNotify now use ==.
+
 يعني، "كل الـupdateShouldNotify دلوقتي بتستخدم العامل ==." ده يعني إن طريقة تحديد إذا كان الـprovider محتاج يبلغ الـlisteners بتغيير في الـstate بقت تعتمد على مقارنة الـ`==` بدل الطرق القديمة
+
 
 ---
 
@@ -99,30 +112,51 @@
 
 تغييرات في دورة حياة الـproviders
 
+
 - When reading a provider results in an exception, the error is now wrapped in a ProviderException.
+
 يعني، لما قراءة الـprovider (زي `ref.read` أو `ref.watch`) بتسبب exception، الخطأ دلوقتي بيتغلف (wrapped) في كائن من نوع `ProviderException`.
+
 - Listeners inside widgets that are not visible are now paused.
+
 يعني، "الـlisteners اللي جوا widgets مش ظاهرة دلوقتي بتتوقف مؤقتًا (paused).
+
 في Riverpod 3.0، لو الـwidget مش ظاهر (not visible)، الـlisteners اللي جواه بتتوقف مؤقتًا (paused). يعني، الـprovider مش هيبعت إشعارات (notifications) للـwidget ده لحد ما يرجع يظهر تاني.
+
 - If a provider is only used by paused providers, it is paused too.
+
 عني، "لو provider مستخدم بس من providers متوقفة مؤقتًا (paused)، هيتوقف مؤقتًا برضه." دي تغييرة في سلوك الـlifecycle بتاع الـproviders في Riverpod 3.0، وبتهدف إنها توفر موارد التطبيق بشكل أكبر.
+
 - When a provider rebuilds, its previous subscriptions now are kept until the rebuild completes.
+
 يعني، "لما provider يعمل rebuild، الـsubscriptions القديمة بتاعتو بتفضل محفوظة لحد ما الـrebuild يكتمل." دي تغييرة في سلوك الـlifecycle بتاع الـproviders في Riverpod 3.0، وبتهدف إنها تحافظ على استقرار الـlisteners أثناء تحديث الـprovider.
+
 - Exceptions in providers are rethrown as a ProviderException.
+
 يعني، "الـexceptions اللي بتحصل في الـproviders دلوقتي بتترمي تاني (rethrown) كـProviderException." دي تغييرة في إزاي Riverpod 3.0 بيتعامل مع الأخطاء اللي بتحصل جوا الـproviders.
+
 
 ---
 
 ### [**New testing utilities**](https://github.com/Ahmed-Fathy-dev/Riverpod-3-Tutorials/blob/main/Riverpod%203%20Upgrades/010-New%20testing%20utilities.md)
 
+
 - ProviderContainer.test.
+
 دي extension method على الـ`ProviderContainer`، بتخليك تنشئ container مؤقت للاختبارات مع إعدادات مخصصة. الـ`ProviderContainer` هو الكائن اللي بيدير الـproviders في Riverpod، وعادةً بيُستخدم في الـunit tests.
+
 - NotifierProvider.overrideWithBuild.
+
 دي method بتسمحلك تعمل override للـ`NotifierProvider` في الاختبارات، بس بدل ما تعمل override بكائن `Notifier` كامل، بتعمل override بس للـ`build` method.
+
 - Future/StreamProvider.overrideWithValue.
+
 دي method بتسمحلك تعمل override للـ`FutureProvider` أو `StreamProvider` في الاختبارات، بحيث إنك تحدد قيمة مباشرة (value) بدل ما تستخدم `Future` أو `Stream` حقيقي.
+
 - WidgetTester.container.
+
 دي extension method على `WidgetTester` (الكائن اللي بتستخدمه في Flutter للـwidget tests)، بتخليك تنشئ `ProviderContainer` مؤقت للاختبارات اللي بتتضمن widgets.
+
 
 ---
 
@@ -130,11 +164,13 @@
 
 دي طريقة تخليك تعرف كائنات تقدر تُستمع ليها (listened to) زي الـproviders العادية، بس بتتحكم فيها بنفسك. الـ`ProviderListenable` هو interface يسمح لأي كائن إنه يبقى قابل للاستماع من الـ`ref.listen` أو `ref.watch` في Riverpod.
 
+
 ---
 
 ### [**Statically safe scoping (code-generation only)**](https://github.com/Ahmed-Fathy-dev/Riverpod-3-Tutorials/blob/main/Riverpod%203%20Upgrades/012-Statically%20safe%20scoping%20(code-generation%20only).md)
 
 ال scoping آمن statically في الـ code generation.
+
 دعم طريقة جديدة للـscoping بتضمن الـtype safety في وقت الكومبايل (compile-time) لما تستخدم الـcode generation. الـscoping هنا بيعني إنك تحدد نطاق الـprovider (يعني إزاي وفين يبقى متاح) بطريقة آمنة وواضحة.
 
 ---
@@ -142,17 +178,32 @@
 ### [**Other changes**](https://github.com/Ahmed-Fathy-dev/Riverpod-3-Tutorials/blob/main/Riverpod%203%20Upgrades/013-Other%20changes.md)
 
 - Ref.invalidate now returns a Future
+
 "الـ`ref.invalidate` دلوقتي بيرجع `Future<void>`، وده بيعني إن عملية الـinvalidation بقت asynchronous، وبتقدر تنتظر اكتمالها باستخدام `await`.
+
 دي تغييرة في سلوك الـ`ref.invalidate`، وهي method بتستخدم عشان تعيد تهيئة (reset) الـprovider لحالته الأولية.
+
 - Watching a provider during a rebuild no longer throw
+
 الـ`watch` لprovider أثناء الـrebuild ماعدش بيرمي exception." دي تحسينة في سلوك الـ`ref.watch` لما بيحصل rebuild للـprovider.
+
 بقى بيتعامل مع الحالة دي بشكل أفضل، والـ`ref.watch` ماعدش بيرمي exception لو حصل أثناء الـrebuild. بدل كده، Riverpod بيضمن إن الـdependency يتم التعامل معاها بشكل آمن.
+
 - StateNotifier now implements Listenable
+
 "الـ`StateNotifier` دلوقتي بيطبق الـ`Listenable` interface." دي تغييرة بتخلي الـ`StateNotifier` يدعم الاستماع للتغييرات بطريقة مباشرة زي أي كائن `Listenable` في Flutter.
+
 - AsyncValue.when supports skipLoadingOnRefresh/skipError
+
 يعني، "الـ`AsyncValue.when` دلوقتي بيدعم `skipLoadingOnRefresh` و`skipError`." دي تحسينة في طريقة التعامل مع الـ`AsyncValue` في الـUI، خصوصًا لما بتتعامل مع حالات الـloading والـerror.
+
 - All Ref listeners now return a way to remove the listener.
+
 الـ`ref` listeners (زي `ref.onDispose`, `ref.onCancel`, إلخ) دلوقتي بيرجعوا دالة تقدر تستخدمها عشان تلغي الـlistener.
+
 - Weak listeners - listen to a provider without preventing auto-dispose.
+
 في الإصدارات القديمة، لو عملت `ref.listen` على provider، الـprovider كان بيفضل "حي" (مش بيتعمل dispose) طالما الـlistener موجود.
+
 في Riverpod 3.0 لما تستخدم `ref.listen`، تقدر تضيف `weak: true` عشان تخلي الـlistener ما يمنعش الـauto-dispose للـprovider.
+
