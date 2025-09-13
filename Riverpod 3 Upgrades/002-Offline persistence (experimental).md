@@ -1,3 +1,4 @@
+### ميزة Offline persistence (experimental)
 ### الوصف
 
 ميزة جديدة في Riverpod 3.0 اللي بتسمح بحفظ حالة الـprovider محليًا على الجهاز (caching a provider locally on the device). بعد كده، لما التطبيق يتقفل ويفتح تاني، الـprovider ده يقدر يرجع من الكاش (restored from the cache). ده يعني إن بياناتك هتفضل موجودة حتى لو الجهاز أوفلاين أو التطبيق مقفول، زي حفظ الـtodos في تطبيق مهام مثلاً.
