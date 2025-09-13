@@ -1,3 +1,5 @@
+### Automatic retry
+
 الميزة دي بتضيف دعم تلقائي لإعادة المحاولة (automatic retry support) للـproviders اللي بتفشل أثناء التهيئة (fail during initialization). ده بيحصل مع exponential backoff، يعني الانتظار بيزيد تدريجيًا (مثل 200ms ثم 400ms ثم 800ms، إلخ)، والـprovider هيحاول يعيد المحاولة لحد ما ينجح أو يتdispose (يتدمر). ده بيساعد لو العملية فشلت بسبب مشكلة مؤقتة (temporary issue)، زي انقطاع الشبكة (lack of network connection).
 
 الميزة دي مدعومة في كل الـproviders اللي asynchronous، زي `AsyncNotifier`، `FutureProvider`، `StreamProvider`. وهي تعمل مع riverpod العادي (بدون code generation) ومع riverpod_generator (لو بتستخدم `@Riverpod` لتوليد الكود تلقائيًا).
@@ -116,3 +118,4 @@ class TodoList extends _$TodoList {
 - **الفايدة**: الميزة دي بتحسن التعامل مع الفشل المؤقت (زي مشاكل الشبكة)، بدون ما تضطر تكتب كود يدوي للـretry. الـexponential backoff بيقلل الحمل على الـserver.
 - **التكامل**: تعمل مع كل أنواع الـproviders الـasynchronous، سواء riverpod العادي أو riverpod_generator. الـdefault behavior بيطبق لو ما حددتش `retry`.
 - **تنويه مهم**: الميزة دي جديدة في 3.0، فلو بتعمل migration من إصدار أقدم، تأكد إن الكود بتاعك مايعتمدش على عدم الـretry (زي لو عايز يفشل فورًا، حدد `retry: (retryCount, error) => null;`).
+
