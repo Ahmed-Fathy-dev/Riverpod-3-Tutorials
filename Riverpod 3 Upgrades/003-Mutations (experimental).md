@@ -1,3 +1,5 @@
+### Mutations (experimental)
+
 ### الجزء الأول: الوصف العام والتحذير (Info)
 
 ميزة جديدة في Riverpod 3.0، وهي بتضيف مفهوم اسمه "mutations" عشان تحل مشاكل معينة في التعامل مع الـside-effects.
@@ -149,3 +151,4 @@ MutationSuccess() => const Text('Todo added!'),
     - الميزة دي **تجريبية** (experimental)، يعني ممكن الـAPI يتغير في المستقبل، فاستخدمها بحذر.
     - الدوكيومنتيشن بتشدد على إنك تستخدم `tsx.get` بدل `Ref.read` عشان تضمن إن الـprovider ما يتعملوش dispose أثناء الـside-effect.
     - لو عايز تتأكد إن الكود بتاعك هيفضل شغّال، تابع التحديثات في الـmigration guide (https://riverpod.dev/docs/3.0_migration).
+
