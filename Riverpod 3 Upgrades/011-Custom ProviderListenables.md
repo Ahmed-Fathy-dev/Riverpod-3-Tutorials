@@ -1,5 +1,3 @@
-### Custom ProviderListenables
-
 ### الوصف
 
 في Riverpod 3.0 بقى ممكن تعمل **ProviderListenables** مخصصة.
@@ -49,22 +47,22 @@ extension<T> on ProviderListenable<T> {
 
 ### 1. الكلاس `Where<T>`
 
-- `final class Where<T>`: كلاس جنريك (generic) بيشتغل على أي نوع بيانات `T`.
+- ال `final class Where<T>`: كلاس جنريك (generic) بيشتغل على أي نوع بيانات `T`.
 - `with SyncProviderTransformerMixin<T, T>`: ده اللي بيخلي الكلاس يقدر يحوّل **ProviderListenable** موجود لنسخة جديدة مخصصة.
-- `final ProviderListenable<T> source;`
+- ال `final ProviderListenable<T> source;`
     
     ده المصدر الأصلي اللي بنسمع (listen) منه.
     
-- `final bool Function(T previous, T value) where;`
+- ال `final bool Function(T previous, T value) where;`
     
     دالة شرطية بتاخد القيمة القديمة (`previous`) والجديدة (`value`)، وتقرر هل التحديث يمرّ ولا لأ.
     
 - `transform(...)`: هنا بنحدد إزاي الـ ProviderListenable الجديد هيشتغل.
-    - `initState: (_) => context.sourceState.requireValue`
+    - ال `initState: (_) => context.sourceState.requireValue`
         
         بيحدد الحالة المبدئية (initial state) بالاعتماد على قيمة المصدر.
         
-    - `listener: (self, previous, next)`
+    - ال `listener: (self, previous, next)`
         
         بيتنادى كل مرة فيه قيمة جديدة جاية من `source`.
         
